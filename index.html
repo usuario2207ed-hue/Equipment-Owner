@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dono do Equipamento - Stellantis</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#e5e5e5;
+    padding:20px;
+}
+
+.container{
+    display:flex;
+    gap:25px;
+    justify-content:center;
+    align-items:flex-start;
+    flex-wrap:wrap;
+}
+
+.painel{
+    width:350px;
+    background:#fff;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,.15);
+}
+
+.painel h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.campo{
+    margin-bottom:15px;
+}
+
+.campo label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.campo input{
+    width:100%;
+    height:42px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px;
+}
+
+.campo input[type=file]{
+    padding:6px;
+}
+
+.botao{
+    width:100%;
+    height:50px;
+    border:none;
+    border-radius:10px;
+    background:#003b80;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.botao:hover{
+    opacity:.9;
+}
+
+#folha{
+    position:relative;
+    width:794px;
+    height:1123px;
+    background:#fff;
+    overflow:hidden;
+}
+
+#fundo{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+#nomePreview{
+    position:absolute;
+    top:225px;
+    left:50%;
+    transform:translateX(-50%);
+    width:500px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    color:#000;
+}
+
+
+#fotoPreview{
+    position:absolute;
+    top:305px;
+    left:50%;
+    width:340px;
+    height:430px;
+    object-fit:cover;
+    display:none;
+
+    transform:
+        translateX(-50%)
+        translateY(0px)
+        scale(1);
+
+    transform-origin:center center;
+}
+
+#equipPreview{
+    position:absolute;
+    top:980px;
+    left:90px;
+    width:260px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    color:#163b8f;
+}
+
+#dataPreview{
+    position:absolute;
+    top:980px;
+    right:100px;
+    width:170px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    color:#000;
+}
+
+@media(max-width:1200px){
+
+    #folha{
+        transform:scale(.65);
+        transform-origin:top center;
+    }
+
+}
+
+@media print {
+
+    body{
+        background:#fff;
+        padding:0;
+        margin:0;
+    }
+
+    .painel{
+        display:none;
+    }
+
+    .container{
+        display:block;
+    }
+
+    #folha{
+        margin:auto;
+        width:794px;
+        height:1123px;
+        transform:none !important;
+    }
+
+}
+
+</style>
+</head>
+
+<script>
+
+const LOGIN_PADRAO = "Admin";
+const SENHA_PADRAO = "136763";
+
+function validarLogin(){
+
+    const usuario =
+    document.getElementById("usuario").value.trim();
+
+    const senha =
+    document.getElementById("senha").value.trim();
+
+    const salvar =
+    document.getElementById("salvarLogin").checked;
+
+    if(
+        usuario === LOGIN_PADRAO &&
+        senha === SENHA_PADRAO
+    ){
+
+        sessionStorage.setItem(
+            "autenticado",
+            "sim"
+        );
+
+        if(salvar){
+
+            localStorage.setItem(
+                "usuarioSalvo",
+                usuario
+            );
+
+            localStorage.setItem(
+                "senhaSalva",
+                senha
+            );
+
+            localStorage.setItem(
+                "salvarLogin",
+                "sim"
+            );
+
+        }else{
+
+            localStorage.clear();
+
+        }
+
+        document.getElementById(
+            "loginOverlay"
+        ).style.display =
+        "none";
+
+    }else{
+
+        document.getElementById(
+            "erroLogin"
+        ).innerText =
+        "Usuário ou senha incorretos";
+
+    }
+
+}
+
+window.onload = function(){
+
+    const usuarioSalvo =
+    localStorage.getItem(
+        "usuarioSalvo"
+    );
+
+    const senhaSalva =
+    localStorage.getItem(
+        "senhaSalva"
+    );
+
+    if(
+        usuarioSalvo &&
+        senhaSalva
+    ){
+
+        document.getElementById(
+            "usuario"
+        ).value =
+        usuarioSalvo;
+
+        document.getElementById(
+            "senha"
+        ).value =
+        senhaSalva;
+
+        document.getElementById(
+            "salvarLogin"
+        ).checked =
+        true;
+
+    }
+
+    if(
+        sessionStorage.getItem(
+            "autenticado"
+        ) === "sim"
+    ){
+
+        document.getElementById(
+            "loginOverlay"
+        ).style.display =
+        "none";
+
+    }
+
+};
+
+</script>
+
+
+<body>
+
+<div id="loginOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000000ee;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+">
+
+<div style="
+background:white;
+padding:30px;
+border-radius:10px;
+width:300px;
+text-align:center;
+">
+
+<h2>🔒 Acesso Restrito</h2>
+
+<input
+type="text"
+id="usuario"
+placeholder="Usuário"
+style="width:100%;padding:10px;margin:5px 0;"
+>
+
+<input
+type="password"
+id="senha"
+placeholder="Senha"
+style="width:100%;padding:10px;margin:5px 0;"
+>
+
+<label style="
+display:flex;
+align-items:center;
+gap:8px;
+margin:10px 0;
+font-size:14px;
+">
+
+<input
+type="checkbox"
+id="salvarLogin"
+>
+
+Salvar senha
+
+</label>
+
+<button
+onclick="validarLogin()"
+style="
+width:100%;
+padding:10px;
+background:#007bff;
+color:white;
+border:none;
+cursor:pointer;
+">
+Entrar
+</button>
+
+<p id="erroLogin" style="color:red;"></p>
+
+</div>
+</div>
+
+
+
+<div class="container">
+
+    <div class="painel">
+
+        <h2>🏭 Dono do Equipamento</h2>
+
+        <div class="campo">
+            <label>Responsável</label>
+            <input type="text" id="responsavel" placeholder="Digite o nome">
+        </div>
+
+        <div class="campo">
+            <label>Nome do Equipamento</label>
+            <input type="text" id="equipamento" placeholder="Digite o equipamento">
+        </div>
+
+        <div class="campo">
+            <label>Data</label>
+            <input type="date" id="data">
+        </div>
+
+<div class="campo">
+    <label>Escolher Foto</label>
+    <input type="file" id="foto" accept="image/*">
+</div>
+
+<div class="campo">
+    <label>Zoom da Foto</label>
+    <input
+        type="range"
+        id="zoom"
+        min="100"
+        max="250"
+        value="100">
+</div>
+
+<div class="campo">
+    <label>Posição Vertical</label>
+    <input
+        type="range"
+        id="moveY"
+        min="-200"
+        max="200"
+        value="0">
+</div>
+
+<div class="campo">
+    <label>Posição Horizontal</label>
+    <input
+        type="range"
+        id="moveX"
+        min="-200"
+        max="200"
+        value="0">
+</div>
+
+<button class="botao" onclick="window.print()">
+🖨️ Imprimir
+</button>
+
+    </div>
+
+    <div id="folha">
+
+        <!-- IMAGEM BASE -->
+        <img
+            src="Dono de equipamento.png"
+            id="fundo"
+        >
+
+        <!-- RESPONSÁVEL -->
+        <div id="nomePreview">
+            
+        </div>
+
+        <!-- FOTO -->
+        <img
+            id="fotoPreview"
+            src=""
+        >
+
+        <!-- EQUIPAMENTO -->
+        <div id="equipPreview">
+           
+        </div>
+
+        <!-- DATA -->
+        <div id="dataPreview">
+            
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const responsavel =
+document.getElementById("responsavel");
+
+const equipamento =
+document.getElementById("equipamento");
+
+const data =
+document.getElementById("data");
+
+const foto =
+document.getElementById("foto");
+
+const nomePreview =
+document.getElementById("nomePreview");
+
+const equipPreview =
+document.getElementById("equipPreview");
+
+const dataPreview =
+document.getElementById("dataPreview");
+
+const fotoPreview =
+document.getElementById("fotoPreview");
+
+const zoom =
+document.getElementById("zoom");
+
+const moveY =
+document.getElementById("moveY");
+
+const moveX =
+document.getElementById("moveX");
+
+function atualizarFoto(){
+
+    const escala =
+        zoom.value / 100;
+
+    fotoPreview.style.transform =
+        `translateX(calc(-50% + ${moveX.value}px))
+         translateY(${moveY.value}px)
+         scale(${escala})`;
+
+}
+
+function atualizar(){
+
+    nomePreview.innerText =
+    responsavel.value || "";
+
+    equipPreview.innerText =
+    equipamento.value || "";
+
+    if(data.value){
+
+const d =
+new Date(data.value + "T12:00:00");
+
+        dataPreview.innerText =
+        d.toLocaleDateString("pt-BR");
+
+    }
+
+}
+
+
+zoom.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+moveY.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+moveX.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+function imprimirFolha(){
+
+const folha =
+document.getElementById("folha");
+
+const conteudo =
+folha.outerHTML;
+
+    const janela =
+    window.open(
+        "",
+        "_blank"
+    );
+
+    janela.document.write(`
+    <html>
+    <head>
+
+    <title>
+    Dono do Equipamento
+    </title>
+
+    <style>
+
+    body{
+        margin:0;
+        padding:0;
+        background:#ffffff;
+        text-align:center;
+    }
+
+    #folha{
+        width:794px;
+        height:1123px;
+        position:relative;
+        margin:auto;
+        overflow:hidden;
+    }
+
+    #folha img{
+        max-width:100%;
+    }
+
+    @page{
+        size:A4 portrait;
+        margin:0;
+    }
+
+    </style>
+
+    </head>
+
+    <body>
+
+            ${conteudo}
+
+        </div>
+
+    </body>
+
+    </html>
+    `);
+
+    janela.document.close();
+
+    setTimeout(()=>{
+
+        janela.focus();
+
+        janela.print();
+
+    },500);
+
+}
+
+/* Atualização dos campos */
+
+responsavel.addEventListener(
+    "input",
+    atualizar
+);
+
+equipamento.addEventListener(
+    "input",
+    atualizar
+);
+
+data.addEventListener(
+    "change",
+    atualizar
+);
+
+/* Eventos da foto */
+
+foto.addEventListener(
+    "change",
+    function(e){
+
+        const arquivo =
+        e.target.files[0];
+
+        if(!arquivo) return;
+
+        const reader =
+        new FileReader();
+
+        reader.onload =
+        function(event){
+
+            fotoPreview.src =
+            event.target.result;
+
+            fotoPreview.style.display =
+            "block";
+
+            atualizarFoto();
+
+        };
+
+        reader.readAsDataURL(
+            arquivo
+        );
+
+    }
+);
+
+/* Eventos dos controles */
+
+zoom.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+moveY.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+moveX.addEventListener(
+    "input",
+    atualizarFoto
+);
+
+/* Inicialização */
+
+atualizar();
+atualizarFoto();
+
+</script>
+
+</body>
+</html>
